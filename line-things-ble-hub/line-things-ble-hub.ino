@@ -5,8 +5,10 @@
 #include <BLE2902.h>
 #include <WiFi.h>
 
-#define RXD2 16
-#define TXD2 17
+#define RXD1 18
+#define TXD1 19
+#define RXD2 25
+#define TXD2 26
 
 #define pin_dout  14
 #define pin_slk   27
@@ -50,6 +52,7 @@ class writeCallback: public BLECharacteristicCallbacks {
     std::string value = bleWriteCharacteristic->getValue();
     Serial.println(value.c_str());
     Serial2.println(value.c_str());
+    delay(10);
   }
 };
 
@@ -75,7 +78,10 @@ void setup() {
   startAdvertising();
 
   Serial.println("Ready to Connect");
+  Serial1.begin(9600, SERIAL_8N1, RXD1, TXD1);
   Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+  Serial2.println(0);
+  delay(50);
 
   AE_HX711_Init();
   AE_HX711_Reset();
@@ -116,10 +122,10 @@ void loop() {
   }
   
   //esp32からのリターン
-  if (Serial2.available() > 0) {
+  if (Serial1.available() > 0) {
       Serial.println("Receive:");
       // 改行コード(10)を検出したら、そこまでの文字列を取得
-      input = Serial2.readStringUntil(10);
+      input = Serial1.readStringUntil(10);
       Serial.println(input);
       i = input[0] - '0';
       if ( i >= 0 ){

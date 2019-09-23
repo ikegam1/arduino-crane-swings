@@ -1,22 +1,22 @@
-#define BTSerialRX 2
-#define BTSerialTX 3
+#define BTSerialRX 52
+#define BTSerialTX 53
 
 #define ServoPinA 9
 #define ServoPinB 10
 
 // HC-SR04のPIN 水平
-#define trigPinA 32
-#define echoPinA 33
+#define trigPinA 48
+#define echoPinA 49
 // スタートからの距離のリミット(cm)
-#define limitMinPinA 8
-#define limitMaxPinA 22
+#define limitMinPinA 6
+#define limitMaxPinA 13
 
 // HC-SR04のPIN　垂直
-#define trigPinB 30
-#define echoPinB 31
+#define trigPinB 50
+#define echoPinB 51
 // 地面からの距離のリミット(cm)
-#define limitMinPinB 5
-#define limitMaxPinB 20
+#define limitMinPinB 8
+#define limitMaxPinB 18
 
 // 0 = スタート
 // 1 = クレーン右 *
