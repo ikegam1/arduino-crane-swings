@@ -15,8 +15,8 @@
 #define trigPinB 50
 #define echoPinB 51
 // 地面からの距離のリミット(cm)
-#define limitMinPinB 8
-#define limitMaxPinB 18
+#define limitMinPinB 1
+#define limitMaxPinB 10
 
 // 0 = スタート
 // 1 = クレーン右 *

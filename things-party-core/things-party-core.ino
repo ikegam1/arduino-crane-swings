@@ -1,7 +1,5 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
-//#include <MsTimer2.h>
-//#include <TimerOne.h>
 #include "config.h"
 #include "env.h"
 // Adafruit Motor Shild Libralyより
@@ -47,6 +45,22 @@ int posB = 0;
 // 9 = クレーン左
 int f=0;
 
+void CloseArm(){
+  for(posB = 180; posB>0; posB-=5)
+  {
+    servoB.write(posB);
+    delay(50);
+  }
+}
+
+void OpenArm(){
+  for(posB = 0; posB<=180; posB+=5)
+  {
+    servoB.write(posB);
+    delay(50);
+  }
+}
+
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(115200);
@@ -76,19 +90,11 @@ void setup() {
   OpenArm();
   servoA.write(0);
   delay(100);
-  
-  //timer
-  //Timer1.initialize(1000000);
-  //Timer1.attachInterrupt(LedBlink);
-  //MsTimer2::set(1000, LedBlink);
-  //MsTimer2::start();
 }
 
 int led = 11; //R=100, G=10, B = 1 while=111, yellow=110,  cyan=11
 int recentDistanceA = 0;
 int recentDistanceB = 0;
-//床に置かれているお菓子などが超音波センサーに狂いを生じさせる。
-//移動量は固定にして対応
 int downCnt = 0;
 int upCnt = 0; 
 uint8_t i;
@@ -203,8 +209,6 @@ void loop() {
       }
       //地面に近づくとCatch
       downCnt+=1;
-      Serial.print("downCnt=");
-      Serial.println(downCnt);
       //if(distanceB <= limitMinPinB){
       if(downCnt >= 5){
         motor3.run(RELEASE);
@@ -245,8 +249,6 @@ void loop() {
       
       //地面はなれるまでUp
       upCnt+=1;
-      Serial.print("upCnt=");
-      Serial.println(upCnt);
       //if(distanceB >= limitMaxPinB){
       if(upCnt >= 3){
         motor3.run(RELEASE);
@@ -259,7 +261,7 @@ void loop() {
       //モーターを動かす アームアップ
       motor3.run(BACKWARD);
       Serial.print("motor3 run");
-      for (i=0; i<100; i+=1) {
+      for (i=0; i<125; i+=1) {
         motor3.setSpeed(i);
         delay(12);
       }
@@ -377,20 +379,4 @@ void GetDistanceB(){
     digitalWrite(trigPinB, LOW);
     durationB = pulseIn(echoPinB, HIGH);
     distanceB= durationB*0.034/2;
-}
-
-void CloseArm(){
-  for(posB = 180; posB>0; posB-=10)
-  {
-    servoB.write(posB);
-    delay(100);
-  }
-}
-
-void OpenArm(){
-  for(posB = 0; posB<=180; posB+=10)
-  {
-    servoB.write(posB);
-    delay(100);
-  }
 }
